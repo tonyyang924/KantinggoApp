@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--meta chartset="utf-8" /-->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&language=ja">
+    </script>
+    <script type="text/javascript">
+    var RangCircle,
+        map ;
+    var markers_Self_Array = [],
+        markers_Search_Array = [];
+        markers_Friend_Array = [];
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(21.972, 120.7459),
+          zoom: 14
+        };
+        map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+        /******************************************************
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(21.972, 120.7459),
+          title:"Hello World!"
+        });
+        marker.setMap(map);
+        markers_Self_Array.push(marker);
+        var populationOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: map,
+          center: new google.maps.LatLng(21.972, 120.7459),
+          radius: 500
+        };
+        RangCircle = new google.maps.Circle(populationOptions);
+        ******************************************************/
+      }
+
+      function setSelfMarker(lon, lat) {
+        //清除Marker
+        if(markers_Self_Array.length > 0) {
+         clearMarker(markers_Self_Array);
+        }
+        //清除Circle
+        if(RangCircle != undefined) {
+          RangCircle.setMap(null);
+        }
+        //SetMarker
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lon),
+          title:"Hello World!"
+        });
+        marker.setMap(map);
+        markers_Self_Array.push(marker);
+        //SetCircle
+        var populationOptions = {
+          strokeColor: '#FF0000', 
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: map,
+          center: new google.maps.LatLng(lat, lon),
+          radius: 500
+        };
+        RangCircle = new google.maps.Circle(populationOptions);
+      }
+
+      function set_search_marker(name, lon, lat) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lon),
+          title:"Hello World!"
+        });
+        marker.setMap(map);
+        markers_Search_Array.push(marker);
+      }
+
+      var set_friend_markers = new Array();
+      function set_friend_marker(name, lon, lat) {
+
+        //創造windowinfo
+        var contentString = name;
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        //製作map
+        if(set_friend_markers.length === 0) {
+          var array = [name,lon,lat];
+          set_friend_markers.push(array);
+        } else {
+          for(var i = 0; i < set_friend_markers.length; i++) {
+            if(set_friend_markers[i][0] === name) {
+              set_friend_markers[i][1] = lat;
+              set_friend_markers[i][2] = lon;
+            } else {
+              var array = [name,lon,lat];
+              set_friend_markers.push(array);
+            }
+          }
+        }
+        if(markers_Friend_Array.length > 0) {
+          clearMarker(markers_Friend_Array);
+        }
+        //產生動態marker
+        for(var j = 0; j < set_friend_markers.length; j++) {
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(set_friend_markers[j][1], set_friend_markers[j][2]),
+            title: set_friend_markers[j][0]
+          });
+          marker.setMap(map);
+          markers_Friend_Array.push(marker);
+          infowindow.open(map,marker);
+        }
+      }
+
+      function clearMarker(markers) {
+        for (var i = 0; i < markers.length; i++ ) {
+          markers[i].setMap(null);
+        }
+        markers.length = 0;
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"/>
+  </body>
+</html>

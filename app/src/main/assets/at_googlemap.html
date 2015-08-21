@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
+    <script>
+      var directionsService = new google.maps.DirectionsService();
+      var DefaultCenterPoint = new google.maps.LatLng(22.998674,120.253233);
+      var marker;
+      var map;
+      //
+      var mymark;
+      var mymarkStatus=0;
+      var placemark;
+      var placemarkStatus=0;
+      //
+      var thestartlat=0;
+	  var thestartlng=0;
+	  var theendlat=0;
+	  var theendlng=0;
+      function initialize() {
+        //規畫路徑呈現選項
+        var rendererOptions = {
+                suppressMarkers: true
+        };
+        directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+        var mapOptions = {
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: DefaultCenterPoint
+        };
+        map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+        directionsDisplay.setMap(map);
+        
+		
+      }
+	  
+	  function addSiteX(siteDesc, lat, lng) {
+		
+	  }
+
+      //座標標示
+      function mark(lat, lng, type){
+        m = new google.maps.LatLng(lat, lng);
+        switch(type){
+          //自身目前位置
+          case 1:
+            
+            if(mymarkStatus === 1) {
+              mymark.setMap(null);
+              mymarkStatus=0;
+            }
+            mymark = new google.maps.Marker({
+              map:map,
+              position: m
+            });
+            mymark.setMap(map);
+            mymarkStatus=1;
+          break;
+          case 2:
+            centerAt(lat,lng);
+
+            if(placemarkStatus === 1) {
+              placemark.setMap(null);
+              placemarkStatus=0;
+            }
+            placemark = new google.maps.Marker({
+              map:map,
+              position: m ,
+              icon: 'place_mark.png'
+            });
+            placemark.setMap(map);
+            placemarkStatus=1;
+          break;
+        }
+      }
+
+      //地圖中心點
+      function centerAt(latitude, longitude){
+        myLatlng = new google.maps.LatLng(latitude,longitude);
+        map.panTo(myLatlng);
+      }
+
+      //進行路線規劃
+      function PlanLine(startlat,startlng,endlat,endlng)
+      {
+		this.thestartlat=startlat;
+		this.thestartlng=startlng;
+		this.theendlat=endlat;
+		this.theendlng=endlng;
+        //規劃路線
+        PlanLine1(startlat,startlng,endlat,endlng); 
+		//標示距離
+		//calcDistance(mymark,placemark);
+      }
+
+      function PlanLine1(startlat,startlng,endlat,endlng){
+        $.ajax({
+           type: "post",
+           dataType: "json",
+           url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+startlat+","+startlng+"&sensor=false&language=zh-tw",
+           success: function (data)
+           {
+            if(data.status=="OK"){
+              var startaddress = data.results[0].formatted_address;
+              PlanLine2(startaddress,endlat,endlng);
+            }
+           },
+           error: function ()
+           {
+              alert("資料錯誤");
+           }
+        });
+      }
+
+      function PlanLine2(startaddress,endlat,endlng){
+        $.ajax({
+           type: "post",
+           dataType: "json",
+           url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+endlat+","+endlng+"&sensor=false&language=zh-tw",
+           success: function (data)
+           {
+            if(data.status=="OK"){
+              var endaddress = data.results[0].formatted_address;
+              calcRoute(startaddress,endaddress);
+            }
+           },
+           error: function ()
+           {
+              alert("資料錯誤");
+           }
+        });
+      }
+
+      //規畫路徑
+      function calcRoute(start,end) {
+ 
+        //規畫路徑請求
+        var request = {
+          origin: start,
+          destination: end,
+          optimizeWaypoints: false,
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+               
+        directionsService.route(request, function(response, status) {
+          //規畫路徑回傳結果
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
+        });
+      }
+      function calcDistance(AMarker,BMarker) {
+        var meters = google.maps.geometry.spherical.computeDistanceBetween(AMarker.getPosition(), BMarker.getPosition());
+        addSiteX("距離"+meters+"公尺",theendlat,theendlng);
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width: device-width;">Google Maps 地圖載入中...</div>
+    <!--
+    <div id="myTextDiv" style="color: white; position: absolute;">
+      <h1>Hello World</h1>
+  </div>
+  -->
+  </body>
+</html>

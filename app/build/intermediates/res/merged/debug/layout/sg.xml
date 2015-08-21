@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F0DEB8"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/SynthesizeGuide"
+        android:textSize="20sp" />
+
+    <TableRow
+        android1:id="@+id/tableRow1"
+        android1:layout_width="match_parent"
+        android1:layout_height="wrap_content" >
+
+        <RadioGroup
+            android1:id="@+id/radioGroup1"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:orientation="horizontal" >
+
+            <TextView
+                android1:id="@+id/Sid"
+                android1:layout_width="wrap_content"
+                android1:layout_height="wrap_content"
+                android1:text="搜尋項目："
+                android1:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <RadioButton
+                android1:id="@+id/radio0"
+                android1:layout_width="wrap_content"
+                android1:layout_height="wrap_content"
+                android1:checked="true"
+                android1:text="生物" />
+
+            <RadioButton
+                android1:id="@+id/radio1"
+                android1:layout_width="wrap_content"
+                android1:layout_height="wrap_content"
+                android1:text="美食" />
+
+            <RadioButton
+                android1:id="@+id/radio2"
+                android1:layout_width="wrap_content"
+                android1:layout_height="wrap_content"
+                android1:text="景點" />
+
+            <!--Button
+                android1:id="@+id/autoSearchBtn"
+                android1:layout_width="match_parent"
+                android1:layout_height="wrap_content"
+                android1:text="自動" /-->
+
+        </RadioGroup>
+
+    </TableRow>
+
+    <WebView
+        android1:id="@+id/at_wv"
+        android1:layout_width="match_parent"
+        android1:layout_height="174dp"
+        android1:layout_weight="0.30" />
+
+    <!--Button
+        android1:id="@+id/submit"
+        android1:layout_width="match_parent"
+        android1:layout_height="wrap_content"
+        android1:text="搜尋" /-->
+        
+    <Button
+            android1:id="@+id/autoSearchBtn"
+            android1:layout_width="match_parent"
+            android1:layout_height="wrap_content"
+            android1:text="自動搜尋" />
+
+    <ListView
+        android1:id="@+id/listView1"
+        android1:layout_width="match_parent"
+        android1:layout_height="144dp" >
+    </ListView>
+
+</LinearLayout><!-- From: file:/D:/AndroidCode/KantinggoApp/app/src/main/res/layout/sg.xml -->

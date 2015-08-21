@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mif.kantinggoapp.tw"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="Main"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="news"></activity>
+        <activity android:name="ec"></activity>
+        <activity android:name="ec2_1"></activity>
+        <activity android:name="ec2_2"></activity>
+        <activity android:name="ec3"></activity>
+        <activity android:name="at"></activity>
+        <activity android:name="sg"></activity>
+        <activity android:name="at2"></activity>
+        <activity android:name="SearchOrganism"></activity>
+        <activity android:name="SearchStation"></activity>
+        <activity android:name="OrganismResult"></activity>
+        <activity android:name="sg_create_room"></activity>
+        <activity android:name="at2_map"></activity>
+    </application>
+
+</manifest>
